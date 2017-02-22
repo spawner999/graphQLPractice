@@ -65,7 +65,7 @@ const RootQuery = new GraphQLObjectType({
                 return axios.get(`http://localhost:3000/companies/${companyId}`)
                     .then(resp => resp.data);
             }
-        }
+        },
     }
 });
 
@@ -82,6 +82,17 @@ const mutation = new GraphQLObjectType({
             resolve(parentValue, args) {
                 return axios.post('http://localhost:3000/users', args)
                     .then(resp => resp.data);
+            }
+        },
+        deleteUser: {
+            type: UserType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLString)}
+            },
+            resolve(parentValue, args) {
+                const userId = args.id;
+                return axios.delete(`http://localhost:3000/users/${userId}`).
+                    then(resp => resp.data);
             }
         }
     }
